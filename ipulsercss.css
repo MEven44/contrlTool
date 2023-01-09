@@ -1,0 +1,58 @@
+* {
+font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+h2 {
+    padding: 1%;
+    margin-left: 2%;
+    }
+
+@media only screen 
+and (min-device-width: 375px) 
+and (max-device-width: 812px) 
+and (-webkit-min-device-pixel-ratio: 4) {
+
+}
+#heading {
+    display: flex;
+    flex-direction: column;
+
+}
+#logo {
+    height: 25vh;
+    width: 45vw;
+}
+
+img {
+height: auto;
+max-width: 100%;
+}
+
+#container {
+border: 2px solid black;
+}
+
+#inputs {
+    border-radius: 5px;
+    padding: 1%;
+    width: 15vw;
+    height: 5vh;
+    margin: 2%;
+
+
+}
+
+.action-bttn {
+    border-radius: 2%;
+    background-color: orange;
+    border: none;
+    height: 30px;
+    border-radius: 5px;
+    
+}
+
+#device-log {
+    height: fit-content;
+    width: 25vw;
+}
+
