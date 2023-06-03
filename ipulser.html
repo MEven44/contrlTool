@@ -168,7 +168,6 @@
 
           freqArray = freqModify.split("");
           takeAwayDot = freqArray.filter((num) => num !== ".");
-
           freqModify = takeAwayDot.join("").padStart(7, "0");
 
           let timeModify = Number.parseFloat(time).toFixed(0).padStart(2, "0");
