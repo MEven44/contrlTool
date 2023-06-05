@@ -1,7 +1,59 @@
+// bluetooth related
+
 let returnValue = "";
 let transmitCharacteristic = null;
 const encoder = new TextEncoder("utf-8");
 const decoder = new TextDecoder("utf8");
+
+// counter buttons and functions
+
+let inc_one_bttn = document.getElementsByClassName('plus_one');
+let dec_one_bttn = document.getElementsByClassName("minus_one");
+let inc_point_one_bttn = document.getElementsByClassName('plus_point_one');
+let dec_point_one_bttn = document.getElementsByClassName("minus_point_one");
+let inc_ten_bttn = document.getElementsByClassName('plus_ten')
+let dec_ten_bttn = document.getElementsByClassName('minus_ten')
+
+let counterFreq = document.getElementById("freq-input");
+let counterTime = document.getElementById("time-input");
+Fcount = 0;
+Tcount = 0;
+
+
+
+inc_one_bttn[0].addEventListener("click", function (e) {
+    Fcount++
+    counterFreq.textContent = Fcount
+})
+
+dec_one_bttn[0].addEventListener("click", (e)=>{
+    Fcount--
+    counterFreq.textContent = Fcount
+})
+
+inc_point_one_bttn[0].addEventListener("click", function (e) {
+  Fcount = Fcount + 0.1;
+  counterFreq.textContent = Fcount;
+});
+
+dec_point_one_bttn[0].addEventListener("click", (e) => {
+  Fcount = Fcount - 0.1;
+  counterFreq.textContent = Fcount;
+});
+
+inc_ten_bttn[0].addEventListener("click", function (e) {
+  Fcount = Fcount + 10;
+  counterFreq.textContent = Fcount;
+});
+
+dec_ten_bttn[0].addEventListener("click", (e) => {
+  Fcount = Fcount - 10;
+  counterFreq.textContent = Fcount;
+});
+
+function noLessThenZero(counterFreq) {
+    if (counterFreq < 0) counterFreq = 0;
+}
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));

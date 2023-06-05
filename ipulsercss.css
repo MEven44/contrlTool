@@ -28,6 +28,14 @@ and (-webkit-min-device-pixel-ratio: 4) {
     width: 45vw;
 }
 
+#increment {
+ 
+}
+
+#decrement {
+
+}
+
 img {
 height: auto;
 max-width: 100%;

@@ -1,13 +1,19 @@
 <!DOCTYPE html>
-
 <html lang="en">
-  <head>
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>iPulser Web Control Tool</title>
+
+
     <link rel="stylesheet" href="./ipulsercss.css" />
     <link rel="icon" type="image/png" sizes="32x32" href="./favicon.ico" />
     <link rel="icon" type="image/png" sizes="16x16" href="./favicon.ico" />
   </head>
 
   <body>
+	  
     <div id="container">
       <div id="heading">
         <div id="logo">
@@ -21,40 +27,30 @@
           to your iPulser before starting
         </h3>
       </div>
-	  
-		<div id="inputs-container">
-			<div id="inputs">
-			Frequency: Choose a frequency for treatment
 
-			<var
-			onChange="inputsToPayload()"
-			type="text"
-			id="inputs"
-			>freq</var>
-			</div>
-			<button id="increment" class="plus_one"> + 1</button>
-			<button id="decrement" class="minus_one"> - 1</button>
+      <div id="inputs-container">
+        <div id="inputs">
+          Frequency:
 
-			<button id="increment" class="plus_point_one"> + 0.1</button>
-			<button id="decrement" class="minus_point_one"> -  0.1</button>
+          <div id="freq-input">1</div>
+        </div>
+        <button id="increment" class="plus_one">+ 1</button>
+        <button id="decrement" class="minus_one">- 1</button>
 
-			<button id="increment" class="plus_ten"> + 10</button>
-			<button id="decrement" class="minus_ten"> - 10</button>
-			<div id="inputs">
-			Time:
-			<var
-				onChange="inputsToPayload()"
-				type="text"
-				id="inputs"
-				
-			>time</var>
-			</div>
-			<!-- options: 3 buttons each one has a different function,  -->
-        
+        <button id="increment" class="plus_point_one">+ 0.1</button>
+        <button id="decrement" class="minus_point_one">- 0.1</button>
 
-			<div id="inputs">
-			<button id="doit" class="action-bttn">Send to iPulser</button>
-			</div>
+        <button id="increment" class="plus_ten">+ 10</button>
+        <button id="decrement" class="minus_ten">- 10</button>
+        <div id="inputs">
+          Time:
+          <div id="time-input">1</div>
+        </div>
+        <!-- options: 3 buttons each one has a different function,  -->
+
+        <div id="inputs">
+          <button id="doit" class="action-bttn">Send to iPulser</button>
+        </div>
       </div>
     </div>
     <hr />
@@ -65,9 +61,6 @@
         <pre id="log"></pre>
       </div>
     </div>
-
-    <script src="index.js">
-     
-    </script>
+	<script src="index.js"></script>
   </body>
 </html>
