@@ -29,26 +29,55 @@
       </div>
 
       <div id="inputs-container">
-        <div id="inputs">
+        <div  id="freq-input">
           Frequency:
-
-          <div id="freq-input">1</div>
+			<input
+				onChange="inputsToPayload()"
+				type="text"
+				id="inputs"
+				value=0
+				minlength="2"
+				maxlength="2"
+				size="3"
+			/>
+          
         </div>
-        <button id="increment" class="plus_one">+ 1</button>
-        <button id="decrement" class="minus_one">- 1</button>
 
-        <button id="increment" class="plus_point_one">+ 0.1</button>
-        <button id="decrement" class="minus_point_one">- 0.1</button>
+        <div id="increment" class="plus_one" onclick="">
+		<img src="images/DC_Library_060623/Button/b_+1.svg"/></div>
+        
+		<div id="decrement" class="minus_one" onclick="">
+		<img src="images/DC_Library_060623/Button/b_-1.svg"/></div>
 
-        <button id="increment" class="plus_ten">+ 10</button>
-        <button id="decrement" class="minus_ten">- 10</button>
-        <div id="inputs">
+        <div id="increment" class="plus_point_one" onclick="">
+		<img src="images/DC_Library_060623/Button/b_+10.svg"/></div>
+        
+		<div id="decrement" class="minus_point_one"> 
+		<img src="images/DC_Library_060623/Button/b_-10.svg"/>
+		</div>
+
+        <div id="increment" class="plus_ten" onclick="">
+		<img src="images/DC_Library_060623/Button/b_+100.svg"/></div>
+        
+		<div id="decrement" class="minus_ten" onclick="">
+		<img src="images/DC_Library_060623/Button/b_-100.svg"/></div>
+        <div id="time-input">
           Time:
-          <div id="time-input">1</div>
+          <div>
+			<input
+				onChange="inputsToPayload()"
+				type="text"
+				id="inputs"
+				value=0
+				minlength="2"
+				maxlength="2"
+				size="3"
+			/>
+		  </div>
         </div>
         <!-- options: 3 buttons each one has a different function,  -->
 
-        <div id="inputs">
+        <div>
           <button id="doit" class="action-bttn">Send to iPulser</button>
         </div>
       </div>

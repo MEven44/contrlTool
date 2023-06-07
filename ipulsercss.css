@@ -29,19 +29,12 @@ and (-webkit-min-device-pixel-ratio: 4) {
 }
 
 #increment {
-  width: 0;
-  height: 0;
-  border: 20px solid transparent;
-  border-top: 0;
-  border-bottom: 35px solid rgb(36, 83, 192);
+  width: 50px;
+  
 }
 
 #decrement {
-  width: 0;
-  height: 0;
-  border: 20px solid transparent;
-  border-bottom: 0;
-  border-top: 35px solid rgba(255, 145, 0, 0.989);
+  width: 50px;
 }
 
 img {
@@ -51,29 +44,67 @@ max-width: 100%;
 
 #inputs-container {
     display: grid;
-    grid-template-columns: repeat(3,1fr);
+    grid-template-columns: repeat(5,1fr);
     grid-template-rows: repeat(4,1fr);
     grid-template-areas:
-    'bttn_1 bttn_2 bttn_3'
-    '. counter .'
-    'bttn_4 bttn_5 bttn_6'
-    '. . submit'
+    'counter bttn_1 bttn_2 bttn_3 .'
+    'counter bttn_4 bttn_5 bttn_6 play'
+    'time bttn_7 bttn_8 . stop'
+    'time bttn_9 bttn_10 . .'
 
 }
-#plus_one {
-    grid-area: 'bttn_2';
+#increment.plus_one {
+    grid-area: bttn_2;
+    justify-self: center;
+    align-self: center;
 }
 
-#minus_one {
-    grid-area: 'bttn_5';
+#decrement.minus_one {
+    grid-area: bttn_5;
+    justify-self: center;
+    align-self: center;
 }
 
-#plus_point_one {
-    grid-area: 'bttn_1';
+#increment.plus_point_one {
+    grid-area: bttn_1;
+    justify-self: center;
+    align-self: center;
 }
 
-#minus_point_one {
-    grid-area: 'bttn_4';
+#decrement.minus_point_one {
+    grid-area: bttn_4;
+    justify-self: center;
+    align-self: center;
+}
+
+#increment.plus_ten {
+    grid-area: bttn_3;
+    justify-self: center;
+    align-self: center;
+}
+
+#decrement.minus_ten {
+    grid-area: bttn_6;
+    justify-self: center;
+    align-self: center;
+}
+
+#freq-input {
+    grid-area: counter;
+    justify-self: center;
+    align-self: center;
+}
+
+#time-input {
+    grid-area: time;
+    justify-self: center;
+    align-self: center;
+}
+
+.action-bttn {
+    grid-area: play;
+    justify-self: center;
+    align-self: center;
 }
 
 
@@ -91,13 +122,15 @@ border: 2px solid black;
     flex-direction: column;
 }
 #inputs {
-        border-radius: 5px;
+        
         padding: 12px;
         width: 200px;
         height: 25px;
         margin-top: 18px;
         margin-bottom: 31px;
         margin-left: 12px;
+        background-color: black;
+        color: white;
     }
 
 

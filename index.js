@@ -51,9 +51,8 @@ dec_ten_bttn[0].addEventListener("click", (e) => {
   counterFreq.textContent = Fcount;
 });
 
-function noLessThenZero(counterFreq) {
-    if (counterFreq < 0) counterFreq = 0;
-}
+if (counterFreq < 0) counterFreq = 0;
+if (counterTime < 0) counterFreq = 0;
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
