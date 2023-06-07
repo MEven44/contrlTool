@@ -29,11 +29,19 @@ and (-webkit-min-device-pixel-ratio: 4) {
 }
 
 #increment {
- 
+  width: 0;
+  height: 0;
+  border: 20px solid transparent;
+  border-top: 0;
+  border-bottom: 35px solid rgb(36, 83, 192);
 }
 
 #decrement {
-
+  width: 0;
+  height: 0;
+  border: 20px solid transparent;
+  border-bottom: 0;
+  border-top: 35px solid rgba(255, 145, 0, 0.989);
 }
 
 img {
@@ -42,10 +50,30 @@ max-width: 100%;
 }
 
 #inputs-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: flex-start;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    grid-template-rows: repeat(4,1fr);
+    grid-template-areas:
+    'bttn_1 bttn_2 bttn_3'
+    '. counter .'
+    'bttn_4 bttn_5 bttn_6'
+    '. . submit'
+
+}
+#plus_one {
+    grid-area: 'bttn_2';
+}
+
+#minus_one {
+    grid-area: 'bttn_5';
+}
+
+#plus_point_one {
+    grid-area: 'bttn_1';
+}
+
+#minus_point_one {
+    grid-area: 'bttn_4';
 }
 
 
