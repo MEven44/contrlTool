@@ -13,42 +13,51 @@ let inc_point_one_bttn = document.getElementsByClassName('plus_point_one');
 let dec_point_one_bttn = document.getElementsByClassName("minus_point_one");
 let inc_ten_bttn = document.getElementsByClassName('plus_ten')
 let dec_ten_bttn = document.getElementsByClassName('minus_ten')
-
+let timeUp = document.getElementById('time-up')
+let timeDown = document.getElementById('time-down')
+let frequency = document.getElementsByClassName('frequency')
 let counterFreq = document.getElementById("freq-input");
 let counterTime = document.getElementById("time-input");
-Fcount = 0;
-Tcount = 0;
-
 
 
 inc_one_bttn[0].addEventListener("click", function (e) {
-    Fcount++
-    counterFreq.textContent = Fcount
+    frequency[0].value++
+    frequency.textContent = frequency[0].value;      
 })
 
 dec_one_bttn[0].addEventListener("click", (e)=>{
-    Fcount--
-    counterFreq.textContent = Fcount
+    frequency[0].value--
+    frequency.textContent = frequency[0].value;
 })
 
 inc_point_one_bttn[0].addEventListener("click", function (e) {
-  Fcount = Fcount + 0.1;
-  counterFreq.textContent = Fcount;
+  frequency[0].value = frequency[0].value + 0.1;
+  frequency.textContent = frequency[0].value;
 });
 
 dec_point_one_bttn[0].addEventListener("click", (e) => {
-  Fcount = Fcount - 0.1;
-  counterFreq.textContent = Fcount;
+  frequency[0].value = frequency[0].value - 0.1;
+  frequency.textContent = frequency[0].value;
 });
 
 inc_ten_bttn[0].addEventListener("click", function (e) {
-  Fcount = Fcount + 10;
-  counterFreq.textContent = Fcount;
+  frequency[0].value = frequency[0].value + 10;
+  frequency.textContent = frequency[0].value;
 });
 
 dec_ten_bttn[0].addEventListener("click", (e) => {
-  Fcount = Fcount - 10;
-  counterFreq.textContent = Fcount;
+  frequency[0].value = frequency[0].value - 10;
+  frequency.textContent = frequency[0].value;
+});
+
+timeUp.addEventListener('click', (e)=>{
+  time[0].value++;
+  time.textContent = time[0].value;
+})
+
+timeDown.addEventListener("click", (e) => {
+  time[0].value--;
+  time.textContent = time[0].value;
 });
 
 if (counterFreq < 0) counterFreq = 0;
@@ -210,8 +219,7 @@ async function connectAndTest() {
 /* #3 */
 
 function inputsToPayload() {
-  const frequency = document.getElementById("frequency").value;
-  const time = document.getElementById("time").value;
+  
   const payload = `#05000${frequency}${time}0000!`;
   return [frequency, time, payload];
 }

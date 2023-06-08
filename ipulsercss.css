@@ -49,8 +49,8 @@ max-width: 100%;
     grid-template-areas:
     'counter bttn_1 bttn_2 bttn_3 .'
     'counter bttn_4 bttn_5 bttn_6 play'
-    'time bttn_7 bttn_8 . stop'
-    'time bttn_9 bttn_10 . .'
+    'time . bttn_8 . stop'
+    'time . bttn_10 . .'
 
 }
 #increment.plus_one {
@@ -87,6 +87,20 @@ max-width: 100%;
     grid-area: bttn_6;
     justify-self: center;
     align-self: center;
+}
+
+#time-up {
+    grid-area: bttn_8;
+    justify-self: center;
+    align-self: center;
+    width: 50px;
+}
+
+#time-down {
+    grid-area: bttn_10;
+    justify-self: center;
+    align-self: center;
+    width: 50px;
 }
 
 #freq-input {
@@ -149,5 +163,10 @@ border: 2px solid black;
 #device-log {
     height: fit-content;
     width: 25vw;
+}
+
+button {
+    background-color: none;
+    border: none;
 }
 

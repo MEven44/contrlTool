@@ -35,9 +35,10 @@
 				onChange="inputsToPayload()"
 				type="text"
 				id="inputs"
+				class="frequency"
 				value=0
-				minlength="2"
-				maxlength="2"
+				minlength="1"
+				maxlength="7"
 				size="3"
 			/>
           
@@ -68,11 +69,20 @@
 				onChange="inputsToPayload()"
 				type="text"
 				id="inputs"
+				class="time"
 				value=0
 				minlength="2"
 				maxlength="2"
 				size="3"
 			/>
+		  </div>
+		</div>
+		  <div id="time-up" onclick="">
+			<img src="images/DC_Library_060623/Button/b_+1.svg"/>
+		  </div>
+
+		  <div id="time-down" onclick="">
+			<img src="images/DC_Library_060623/Button/b_-1.svg"/>
 		  </div>
         </div>
         <!-- options: 3 buttons each one has a different function,  -->
@@ -80,7 +90,6 @@
         <div>
           <button id="doit" class="action-bttn">Send to iPulser</button>
         </div>
-      </div>
     </div>
     <hr />
 
