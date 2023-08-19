@@ -1,256 +1,234 @@
 <!DOCTYPE html>
 
 <html lang="en">
-  <head>
-    <link rel="stylesheet" href="./ipulsercss.css" />
-    <link rel="icon" type="image/png" sizes="32x32" href="./favicon.ico" />
-    <link rel="icon" type="image/png" sizes="16x16" href="./favicon.ico" />
-  </head>
+	<head> </head>
 
-  <body>
-    <div id="container">
-      <div id="heading">
-        <div id="logo">
-          <img src="./images/logo.jpeg" alt="logo" />
-        </div>
-        <h2>Contro Tool</h2>
-        <h3>
-          iPulser control tool enable you to operate the iPulser with your own
-          set of frequencies <br />
-          choose the desired frequency and time, and make sure you are connected
-          to your iPulser before starting
-        </h3>
-      </div>
-	  
-		<div id="inputs-container">
-			<div id="inputs">
-			Frequency: Choose a frequency for treatment
+	<body>
+		<div style="border: 2px solid black; width: 700px; padding: 20px; margin: auto">
+<!-- #1 -->
+			<div style="padding: 5px">
+				Frequency:
+				<input
+					onChange="inputsToPayload()"
+					type="text"
+					id="frequency"
+					value=""
+					minlength="7"
+					maxlength="7"
+					size="8"
+				/>
+			</div>
+			<div style="padding: 5px">
+				Time:
+				<input
+					onChange="inputsToPayload()"
+					type="text"
+					id="time"
+					value=""
+					minlength="2"
+					maxlength="2"
+					size="3"
+				/>
+			</div>
+<!-- #2 -->
 
-			<select name="frequencies" id="menu" onChange="inputsToPayload()">
-			<option value="">Please choose a frequency</option>
-			<option value="0001600">160Hz</option>
-			<option value="0000012">1.2Hz</option>
-			<option value="0000100">10Hz</option>
-			<option value="0000159">15.9hz</option>
-			<option value="0000025">2.5Hz</option>
-			</select>
+			<div style="padding: 5px">
+				<button id="doit">Send to iPulser</button>
 			</div>
 
-			<div id="inputs">
-			Time:
-			<input
-				onChange="inputsToPayload()"
-				type="text"
-				id="inputs"
-				value=""
-				minlength="2"
-				maxlength="2"
-				size="3"
-			/>
+			
+		</div>
+
+		<hr />
+
+		<div style="width: 700px; padding: 10px; margin: auto">
+			<h3>Device Communication</h3>
+			<div id="output" class="output">
+				<pre id="log"></pre>
 			</div>
-        
+		</div>
 
-			<div id="inputs">
-			<button id="doit" class="action-bttn">Send to iPulser</button>
-			</div>
-      </div>
-    </div>
-    <hr />
+		<script>
+			let returnValue = '';
+			let transmitCharacteristic = null;
+			const encoder = new TextEncoder('utf-8');
+			const decoder = new TextDecoder('utf8');
 
-    <div id="device-log">
-      <h3>Device Communication</h3>
-      <div id="output" class="output">
-        <pre id="log"></pre>
-      </div>
-    </div>
+			function sleep(ms) {
+				return new Promise(resolve => setTimeout(resolve, ms));
+			}
 
-    <script>
-      let returnValue = "";
-      let transmitCharacteristic = null;
-      const encoder = new TextEncoder("utf-8");
-      const decoder = new TextDecoder("utf8");
+			// do some logging
+			const Logger = {
+				log: function () {
+					var line = Array.prototype.slice
+						.call(arguments)
+						.map(function (argument) {
+							return typeof argument === 'string' ? argument : JSON.stringify(argument);
+						})
+						.join(' ');
 
-      function sleep(ms) {
-        return new Promise((resolve) => setTimeout(resolve, ms));
-      }
+					document.querySelector('#log').textContent += line + '\n';
+				},
+				clearLog: function () {
+					document.querySelector('#log').textContent = '';
+				},
+			};
+			const log = Logger.log;
 
-      // do some logging
-      const Logger = {
-        log: function () {
-          var line = Array.prototype.slice
-            .call(arguments)
-            .map(function (argument) {
-              return typeof argument === "string"
-                ? argument
-                : JSON.stringify(argument);
-            })
-            .join(" ");
+			function handleNotifications(event) {
+				let value = event.target.value;
+				const val = decoder.decode(value);
+				log('return value = ' + val);
+				returnValue = val;
+			}
 
-          document.querySelector("#log").textContent += line + "\n";
-        },
-        clearLog: function () {
-          document.querySelector("#log").textContent = "";
-        },
-      };
-      const log = Logger.log;
+			async function sendCommandAndWaitForResponse(characteristic, command, timeoutSec = 20) {
+				returnValue = '';
 
-      function handleNotifications(event) {
-        let value = event.target.value;
-        const val = decoder.decode(value);
-        log("return value = " + val);
-        returnValue = val;
-      }
+				const encodedData = encoder.encode(command);
+				const value = await characteristic.writeValue(encodedData);
 
-      async function sendCommandAndWaitForResponse(
-        characteristic,
-        command,
-        timeoutSec = 20
-      ) {
-        returnValue = "";
+				for (let i = 0; i < timeoutSec; i++) {
+					if (returnValue !== '') {
+						return returnValue;
+					}
+					await sleep(1000);
+				}
+				return '';
+			}
 
-        const encodedData = encoder.encode(command);
-        const value = await characteristic.writeValue(encodedData);
+			async function waitForResponse(timeoutSec = 20) {
+				returnValue = '';
+				for (let i = 0; i < timeoutSec; i++) {
+					if (returnValue !== '') {
+						return returnValue;
+					}
+					await sleep(1000);
+				}
+				return '';
+			}
 
-        for (let i = 0; i < timeoutSec; i++) {
-          if (returnValue !== "") {
-            return returnValue;
-          }
-          await sleep(1000);
-        }
-        return "";
-      }
+			function inputs(freq,time) {
+				console.log('frequency is:', freq, 'time is:',time)
+				let freqModify = Number.parseFloat(freq)
+				.toFixed(1)
+				
+				freqArray = freqModify.split('')
+				takeAwayDot = freqArray.filter(num=>num !== '.')
+				
+				freqModify = takeAwayDot.join("").padStart(7, "0");
+				
+				let timeModify = Number.parseFloat(time)
+				.toFixed(0)
+				.padStart(2,'0')
+				
+				let input = `#05000${freqModify}${timeModify}000!`;
+				
+				return input
+			}
 
-      async function waitForResponse(timeoutSec = 20) {
-        returnValue = "";
-        for (let i = 0; i < timeoutSec; i++) {
-          if (returnValue !== "") {
-            return returnValue;
-          }
-          await sleep(1000);
-        }
-        return "";
-      }
+			async function connectAndTest() {
+				// const characteristicUUID = "49535343-4c8a-39b3-2f49-511cff073b7e";
+				const transmitCharacteristicUUID = '49535343-1e4d-4bd9-ba61-23c647249616';
+				const receiveCharacteristicUUID = '49535343-8841-43f4-a8d4-ecbe34729bb3';
+				// this is the transmit uart service
+				const serviceUUID = '49535343-fe7d-4ae5-8fa9-9fafd205e455';
 
-      async function connectAndTest() {
-        // const characteristicUUID = "49535343-4c8a-39b3-2f49-511cff073b7e";
-        const transmitCharacteristicUUID =
-          "49535343-1e4d-4bd9-ba61-23c647249616";
-        const receiveCharacteristicUUID =
-          "49535343-8841-43f4-a8d4-ecbe34729bb3";
-        // this is the transmit uart service
-        const serviceUUID = "49535343-fe7d-4ae5-8fa9-9fafd205e455";
+				const device = await navigator.bluetooth.requestDevice({
+					filters: [{ namePrefix: 'iPulser' }],
+					optionalServices: [serviceUUID],
+				});
+				const server = await device.gatt.connect();
+				const service = await server.getPrimaryService(serviceUUID);
 
-        const device = await navigator.bluetooth.requestDevice({
-          filters: [{ namePrefix: "iPulser" }],
-          optionalServices: [serviceUUID],
-        });
-        const server = await device.gatt.connect();
-        const service = await server.getPrimaryService(serviceUUID);
+				transmitCharacteristic = await service.getCharacteristic(transmitCharacteristicUUID);
 
-        transmitCharacteristic = await service.getCharacteristic(
-          transmitCharacteristicUUID
-        );
+				// const receiveCharacteristic = await service.getCharacteristic(receiveCharacteristicUUID);
 
-        // const receiveCharacteristic = await service.getCharacteristic(receiveCharacteristicUUID);
+				await transmitCharacteristic.startNotifications();
 
-        await transmitCharacteristic.startNotifications();
+				transmitCharacteristic.addEventListener('characteristicvaluechanged', handleNotifications);
 
-        transmitCharacteristic.addEventListener(
-          "characteristicvaluechanged",
-          handleNotifications
-        );
+			// send frequency command to device
 
-        // send frequency command to device
+			
+			
 
-        function inputs(freq, time) {
-          console.log("frequency is:", freq, "time is:", time);
-          let freqModify = Number.parseFloat(freq).toFixed(1);
+			log("sent time", time.value);
+			log(`Sent this Frequency ${frequency.value}`);
+			log(`Sent this command`, inputs(frequency.value, time.value));
+			log('the length of the command is:',inputs(frequency.value, time.value).length )
 
-          freqArray = freqModify.split("");
-          takeAwayDot = freqArray.filter((num) => num !== ".");
-          freqModify = takeAwayDot.join("").padStart(7, "0");
+				await sendCommandAndWaitForResponse(transmitCharacteristic, inputs(frequency.value, time.value));
+				if (returnValue == '') {
+					return 'The Command to test the device timed out: expected #06! but got nothing';
+				} else {
+					if (returnValue !== '#06!') {
+						return `The Command to test the device did not return an expected response: expected #06! but got ${returnValue}`;
+					}
+				}
+				log(`Got expected response ${returnValue}`);
+				log("sending '#0599!'");
+				await sendCommandAndWaitForResponse(transmitCharacteristic, '#0599!');
+				if (returnValue == '') {
+					return 'The Command to test the device timed out: expected #06! but got nothing';
+				} else {
+					if (returnValue !== '#06!') {
+						return `The Command to test the device did not return an expected response: expected #06! but got ${returnValue}`;
+					}
+				}
+				log(`Got expected response ${returnValue}`);
+				// seems we need to wait for another unprompted response
+				await waitForResponse();
+				if (returnValue == '') {
+					return 'The Command to test the device timed out: expected #21! but got nothing';
+				} else {
+					if (returnValue !== '#21!') {
+						return `The Command to test the device did not return an expected response: expected #21! but got ${returnValue}`;
+					}
+				}
+				log(`Got expected response ${returnValue}`);
 
-          let timeModify = Number.parseFloat(time).toFixed(0).padStart(2, "0");
+				// show the pass/fail buttons
+				document.getElementById('passFailButtons').style.display = 'block';
+			}
 
-          let input = `#05000${freqModify}${timeModify}000!`;
+/* #3 */
 
-          return input;
-        }
-        log("sent time", time.value);
-        log(`Sent this Frequency ${frequency.value}`);
-        log(`Sent this command`, inputs(frequency.value, time.value));
-        log(
-          "the length of the command is:",
-          inputs(frequency.value, time.value).length
-        );
+			function inputsToPayload() {
+				const frequency = document.getElementById('frequency').value;
+				const time = document.getElementById('time').value;
+				
+				const payload = inputs(frequency, time)
+				return [frequency, time, payload];
+			};
 
-        await sendCommandAndWaitForResponse(
-          transmitCharacteristic,
-          inputs(frequency.value, time.value)
-        );
-        if (returnValue == "") {
-          return "The Command to test the device timed out: expected #06! but got nothing";
-        } else {
-          if (returnValue !== "#06!") {
-            return `The Command to test the device did not return an expected response: expected #06! but got ${returnValue}`;
-          }
-        }
-        log(`Got expected response ${returnValue}`);
-        log("sending '#0599!'");
-        await sendCommandAndWaitForResponse(transmitCharacteristic, "#0599!");
-        if (returnValue == "") {
-          return "The Command to test the device timed out: expected #06! but got nothing";
-        } else {
-          if (returnValue !== "#06!") {
-            return `The Command to test the device did not return an expected response: expected #06! but got ${returnValue}`;
-          }
-        }
-        log(`Got expected response ${returnValue}`);
-        // seems we need to wait for another unprompted response
-        await waitForResponse();
-        if (returnValue == "") {
-          return "The Command to test the device timed out: expected #21! but got nothing";
-        } else {
-          if (returnValue !== "#21!") {
-            return `The Command to test the device did not return an expected response: expected #21! but got ${returnValue}`;
-          }
-        }
-        log(`Got expected response ${returnValue}`);
+/* #4 */
+			document.querySelector('#doit').addEventListener('click', async function () {
+				log("trying to emit");
+				let [frequency, time] = inputsToPayload();
+/* #5 */
 
-        // show the pass/fail buttons
-        document.getElementById("passFailButtons").style.display = "block";
-      }
+				try {
+					Logger.clearLog();
+					const error = await connectAndTest();
+					if (error) {
+						alert(`Error encountered: ${error}`);
+						return;
+					}
+				} catch (e) {
+					alert(`Error encountered: ${e.message}`);
+				}
+			});
 
-      /* #3 */
+			
+			window.onload = () => {
 
-      function inputsToPayload() {
-        const frequency = document.getElementById("frequency").value;
-        const time = document.getElementById("time").value;
-        const payload = `#05000${frequency}${time}0000!`;
-        return [frequency, time, payload];
-      }
+				
+			};
 
-      /* #4 */
-      document
-        .querySelector("#doit")
-        .addEventListener("click", async function () {
-          log("doing it");
-          let [frequency, time] = inputsToPayload();
-          /* #5 */
 
-          try {
-            Logger.clearLog();
-            const error = await connectAndTest();
-            if (error) {
-              alert(`Error encountered: ${error}`);
-              return;
-            }
-          } catch (e) {
-            alert(`Error encountered: ${e.message}`);
-          }
-        });
-
-      window.onload = () => {};
-    </script>
-  </body>
+		</script>
+	</body>
 </html>
