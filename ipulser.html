@@ -110,9 +110,8 @@
 			}
 
 			function inputs(freq,time) {
-				console.log('frequency is:', freq, 'time is:',time)
-				let freqModify = Number.parseFloat(freq)
-				.toFixed(1)
+        let freqModify = Number.parseFloat(freq)
+				.toFixed(2)
 				
 				freqArray = freqModify.split('')
 				takeAwayDot = freqArray.filter(num=>num !== '.')
@@ -122,8 +121,9 @@
 				let timeModify = Number.parseFloat(time)
 				.toFixed(0)
 				.padStart(2,'0')
+				console.log('frequency is:', freqModify, 'time is:',timeModify)
 				
-				let input = `#05000${freqModify}${timeModify}000!`;
+				let input = `#05000${freqModify}${timeModify}0000!`;
 				
 				return input
 			}
